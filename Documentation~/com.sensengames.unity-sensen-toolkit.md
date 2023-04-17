@@ -1,4 +1,4 @@
-{{DESCRIPTION}}
+Useful tools, scripts, classes and functions for developing games in Unity.
 
 Documentation for Unity package manager window goes here.
 Also if images are used in README.md / docs this is a good place to store those as well.

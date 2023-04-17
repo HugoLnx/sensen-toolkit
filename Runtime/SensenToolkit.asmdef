@@ -1,9 +1,8 @@
 {
-    "name": "Unity.com.{{COMPANY}}.{{REPOSITORY_NAME}}.Editor",
+    "name": "SensenToolkit",
+    "rootNamespace": "",
     "references": [],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
