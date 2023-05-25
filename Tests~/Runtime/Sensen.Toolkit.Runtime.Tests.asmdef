@@ -2,7 +2,7 @@
     "name": "SensenToolkit.Tests",
     "rootNamespace": "",
     "references": [
-        "Unity.com.sensengames.unity-sensen-toolkit",
+        "Sensen.Toolkit.Runtime",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],
