@@ -78,16 +78,22 @@ namespace SensenToolkit.Mathx
 
         public static Vector2 RotationToDirection2D(float angle, float initial = 0)
         {
-            angle = (angle + initial) * Mathf.Deg2Rad;
-            return new Vector2(
-                x: Mathf.Sin(angle),
-                y: Mathf.Cos(angle * Mathf.Deg2Rad)
-            );
+            return Anglex.AngleToVector2(angle + initial);
         }
 
         public static float Direction2DToRotation(Vector2 direction, float initial = 0)
         {
             return direction.Angle() - initial;
+        }
+
+        public static float Vector2ToAngle(Vector2 vec)
+        {
+            return Vector2.SignedAngle(Vector2.right, vec);
+        }
+
+        public static Vector2 AngleToVector2(float angle)
+        {
+            return Math2Dx.RotateBy(angle, Vector2.right);
         }
     }
 }
