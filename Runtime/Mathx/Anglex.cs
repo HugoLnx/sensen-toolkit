@@ -75,5 +75,19 @@ namespace SensenToolkit.Mathx
         {
             return ((degrees % fullAngle) + fullAngle) % fullAngle;
         }
+
+        public static Vector2 RotationToDirection2D(float angle, float initial = 0)
+        {
+            angle = (angle + initial) * Mathf.Deg2Rad;
+            return new Vector2(
+                x: Mathf.Sin(angle),
+                y: Mathf.Cos(angle * Mathf.Deg2Rad)
+            );
+        }
+
+        public static float Direction2DToRotation(Vector2 direction, float initial = 0)
+        {
+            return direction.Angle() - initial;
+        }
     }
 }

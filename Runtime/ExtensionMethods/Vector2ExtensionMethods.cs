@@ -9,6 +9,11 @@ namespace SensenToolkit
             return new Vector3(v2.x, 0, v2.y);
         }
 
+        public static float Angle(this Vector2 vec)
+        {
+            return Vector2.SignedAngle(Vector2.up, vec);
+        }
+
         public static Vector2 RotateBy(this Vector2 vec, float angle)
         {
             float radians = angle * Mathf.Deg2Rad;
