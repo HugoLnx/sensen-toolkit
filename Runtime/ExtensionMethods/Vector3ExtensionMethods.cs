@@ -16,6 +16,10 @@ namespace SensenToolkit
         {
             return new Vector3(v3.x, v3.y, v3.z);
         }
+        public static Vector2 XY(this Vector3 v3)
+        {
+            return new Vector2(v3.x, v3.y);
+        }
 
         public static Vector3 Clone(this Vector3 v3, float? x = null, float? y = null, float? z = null)
         {
