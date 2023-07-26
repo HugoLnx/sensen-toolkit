@@ -36,5 +36,13 @@ namespace SensenToolkit
                 }
             }
         }
+
+        public static async Task RetryOnError(this Task task, int maxRetries = 3, float delay = 0.1f, float delayIncrement = 1f)
+        {
+            await task
+            .ContinueWith(t => true)
+            .RetryOnError(maxRetries, delay, delayIncrement)
+            .ConfigureAwait(false);
+        }
     }
 }
