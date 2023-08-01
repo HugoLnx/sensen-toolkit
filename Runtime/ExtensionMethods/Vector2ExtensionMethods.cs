@@ -54,5 +54,13 @@ namespace SensenToolkit
                 y: Vector2.Dot(vec, refVect)
             );
         }
+
+        public static Vector2 With(this Vector2 vec, float? x = null, float? y = null)
+        {
+            return new Vector2(
+                x: x ?? vec.x,
+                y: y ?? vec.y
+            );
+        }
     }
 }
