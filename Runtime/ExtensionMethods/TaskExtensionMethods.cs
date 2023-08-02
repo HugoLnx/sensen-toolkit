@@ -73,7 +73,7 @@ namespace SensenToolkit
                 }
                 catch (System.Exception e)
                 {
-                    Debug.LogError(e);
+                    Debug.LogWarning($"RetryOnError: {e}");
                     await Task.Delay((int)(delay * 1000)).AwaitInAnyThread();
                     delay += delayIncrement;
                 }
@@ -91,20 +91,24 @@ namespace SensenToolkit
             .RetryOnError<bool>(maxRetries, delay, delayIncrement)
             .AwaitInCurrentThread();
         }
-        public static Task<T> DelayWhileOffline<T>(this Task<T> task)
+        public static async Task<T> DelayWhileOffline<T>(this Task<T> task)
         {
-            return task.DelayWhile(() => Application.internetReachability == NetworkReachability.NotReachable);
+            return await task.DelayWhile(() =>
+                Application.internetReachability == NetworkReachability.NotReachable
+            ).AwaitInCurrentThread();
         }
-        public static Task DelayWhileOffline(this Task task)
+        public static async Task DelayWhileOffline(this Task task)
         {
-            return task
+            await task
             .ToTypedTask()
-            .DelayWhileOffline<bool>();
+            .DelayWhileOffline<bool>()
+            .AwaitInCurrentThread();
         }
 
-        private static Task<bool> ToTypedTask(this Task task)
+        private static async Task<bool> ToTypedTask(this Task task)
         {
-            return task.ContinueWith(_ => true, TaskScheduler.FromCurrentSynchronizationContext());
+            await task.AwaitInCurrentThread();
+            return true;
         }
     }
 }
