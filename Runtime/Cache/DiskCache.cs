@@ -53,7 +53,7 @@ namespace SensenToolkit
 
         public async Task SetValue<T>(string key, T value)
         {
-            string filePath = Path.Combine(_dirPath, key);
+            string filePath = Path.Combine(_dirPath, CodeFor(key));
 
             string json = JSONx.ToJson(value);
             byte[] encryptedJson = await _simpleCrypto
