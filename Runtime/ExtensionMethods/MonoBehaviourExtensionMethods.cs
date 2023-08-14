@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System;
 
 namespace SensenToolkit
 {
@@ -17,6 +19,28 @@ namespace SensenToolkit
             {
                 yield return coroutine;
             }
+        }
+
+        public static Task StartCoroutineAsync(this MonoBehaviour mono, IEnumerator coroutine)
+        {
+            TaskCompletionSource<bool> tcs = new();
+            mono.StartCoroutine(CoroutineAsync(coroutine, tcs));
+            return tcs.Task;
+        }
+
+        public static async Task<T> StartCoroutineAsync<T>(this MonoBehaviour mono, System.Func<TaskCompletionSource<T>, IEnumerator> coroutineExec)
+        {
+            TaskCompletionSource<bool> tcs = new();
+            TaskCompletionSource<T> tcsResult = new();
+            mono.StartCoroutine(CoroutineAsync(coroutineExec.Invoke(tcsResult), tcs));
+            await tcs.Task.AwaitInCurrentThread();
+            return tcsResult.Task.Result;
+        }
+
+        private static IEnumerator CoroutineAsync(IEnumerator coroutine, TaskCompletionSource<bool> tcs)
+        {
+            yield return coroutine;
+            tcs.SetResult(true);
         }
     }
 }
