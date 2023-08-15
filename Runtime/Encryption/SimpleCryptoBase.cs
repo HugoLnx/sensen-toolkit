@@ -37,5 +37,14 @@ namespace SensenToolkit
         {
             return _crypto.Decrypt(encryptedContent, _key);
         }
+        public Task EncryptToFile(string plainText, string filePath)
+        {
+            return _crypto.EncryptToFile(plainText, filePath, _key);
+        }
+
+        public Task<string> DecryptFromFile(string filePath)
+        {
+            return _crypto.DecryptFromFile(filePath, _key);
+        }
     }
 }

@@ -41,14 +41,19 @@ namespace SensenToolkit
                 return (false, default);
             }
 
-            byte[] encryptedJson = await File
-                .ReadAllBytesAsync(filePath)
-                .AwaitInAnyThread();
-            string json = await _simpleCrypto
-                .Decrypt(encryptedJson)
-                .AwaitInAnyThread();
-            T value = JSONx.FromJson<T>(json);
-            return (true, value);
+            try
+            {
+                string json = await _simpleCrypto
+                    .DecryptFromFile(filePath)
+                    .AwaitInAnyThread();
+                T value = JSONx.FromJson<T>(json);
+                return (true, value);
+            } catch (Exception e)
+            {
+                Debug.LogWarning($"Deleting Cache File. Failed to read it. key={key} path={filePath} error={e}");
+                await DeleteKey(key).AwaitInAnyThread();
+                return (false, default);
+            }
         }
 
         public async Task SetValue<T>(string key, T value)
@@ -56,10 +61,9 @@ namespace SensenToolkit
             string filePath = Path.Combine(_dirPath, CodeFor(key));
 
             string json = JSONx.ToJson(value);
-            byte[] encryptedJson = await _simpleCrypto
-                .Encrypt(json)
+            await _simpleCrypto
+                .EncryptToFile(json, filePath)
                 .AwaitInAnyThread();
-            File.WriteAllBytes(filePath, encryptedJson);
         }
 
         public Task Remove(string key)
@@ -100,6 +104,16 @@ namespace SensenToolkit
             {
                 Directory.CreateDirectory(_dirPath);
             }
+        }
+
+        private Task DeleteKey(string key)
+        {
+            string filePath = Path.Combine(_dirPath, CodeFor(key));
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+            return Task.CompletedTask;
         }
 
         private string CodeFor(string key)
