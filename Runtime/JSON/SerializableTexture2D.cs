@@ -23,6 +23,10 @@ namespace SensenToolkit
                 return _sprite;
             }
         }
+        public bool IsValid =>
+            !string.IsNullOrEmpty(Base64)
+            && Texture != null
+            && Sprite != null;
 
         public SerializableTexture2D(Texture2D texture)
         {
