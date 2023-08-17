@@ -11,13 +11,18 @@ namespace SensenToolkit.Pools
         private readonly int _maxCreations;
         public HashSet<T> Creations { get; } = new();
 
-        public SimpleExpandablePool(Func<T> factory, int minSize = 20, int? maxCreations = null)
+        public SimpleExpandablePool(Func<T> factory, int minSize = 20, int? maxCreations = null, bool prefill = true)
         {
             _factory = factory;
             _minSize = minSize;
             _maxCreations = maxCreations ?? minSize + 30;
 
-            for (int i = 0; i < _minSize; i++)
+            if (prefill) Prefill();
+        }
+
+        public void Prefill()
+        {
+            while (Creations.Count < _minSize)
             {
                 Grow();
             }
