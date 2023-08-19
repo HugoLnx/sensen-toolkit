@@ -11,6 +11,10 @@ namespace SensenToolkit
     {
         public static IEnumerator StartCoroutinesInParallel(this MonoBehaviour mono, params IEnumerator[] enumerators)
         {
+            return StartCoroutinesInParallel(mono, (IEnumerable<IEnumerator>) enumerators);
+        }
+        public static IEnumerator StartCoroutinesInParallel(this MonoBehaviour mono, IEnumerable<IEnumerator> enumerators)
+        {
             List<Coroutine> coroutines = enumerators
                 .Select(coroutine => mono.StartCoroutine(coroutine))
                 .ToList();
