@@ -20,5 +20,17 @@ namespace SensenToolkit
             str = RegexNonSlugChars.Replace(str, "_");
             return str;
         }
+
+        public static string ToBase64(this string str)
+        {
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(str);
+            return System.Convert.ToBase64String(bytes);
+        }
+
+        public static string FromBase64(this string str)
+        {
+            byte[] bytes = System.Convert.FromBase64String(str);
+            return System.Text.Encoding.UTF8.GetString(bytes);
+        }
     }
 }
