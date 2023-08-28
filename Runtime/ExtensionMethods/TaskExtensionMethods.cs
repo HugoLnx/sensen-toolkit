@@ -10,7 +10,15 @@ namespace SensenToolkit
     {
         public static IEnumerator WaitForCompletion(this Task task)
         {
-            return new WaitUntil(() => task.IsCompleted);
+            yield return new WaitUntil(() => task.IsCompleted);
+            if (task.IsCanceled)
+            {
+                Debug.LogWarning("Task was canceled");
+            }
+            else if (task.IsFaulted)
+            {
+                Debug.LogWarning($"Task faulted: {task.Exception}");
+            }
         }
 
         public static ConfiguredTaskAwaitable<T> AwaitInCurrentThread<T>(this Task<T> task)

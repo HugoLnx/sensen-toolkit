@@ -25,14 +25,19 @@ namespace SensenToolkit
             }
         }
 
-        public static Task StartCoroutineAsync(this MonoBehaviour mono, IEnumerator coroutine)
+        public static Coroutine StartTaskAsCoroutine(this MonoBehaviour mono, Task task)
+        {
+            return mono.StartCoroutine(task.WaitForCompletion());
+        }
+
+        public static Task StartCoroutineAsTask(this MonoBehaviour mono, IEnumerator coroutine)
         {
             TaskCompletionSource<bool> tcs = new();
             mono.StartCoroutine(CoroutineAsync(coroutine, tcs));
             return tcs.Task;
         }
 
-        public static async Task<T> StartCoroutineAsync<T>(this MonoBehaviour mono, System.Func<TaskCompletionSource<T>, IEnumerator> coroutineExec)
+        public static async Task<T> StartCoroutineAsTask<T>(this MonoBehaviour mono, System.Func<TaskCompletionSource<T>, IEnumerator> coroutineExec)
         {
             TaskCompletionSource<bool> tcs = new();
             TaskCompletionSource<T> tcsResult = new();
