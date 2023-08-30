@@ -1,7 +1,9 @@
 {
     "name": "Sensen.Toolkit.Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:81e320ebbd157ab42b61c997bcce856a"
+    ],
     "includePlatforms": [
         "Editor"
     ],

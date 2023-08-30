@@ -8,6 +8,10 @@ namespace SensenToolkit.Mathx
     public static class Floatx
     {
         public const float DefaultPrecision = 1e-6f;
+        public static bool IsUsual(float f)
+        {
+            return !float.IsNaN(f) && float.IsFinite(f);
+        }
         public static bool IsEqual(float f1, float f2, float precision=DefaultPrecision)
         {
             float diff = f1 - f2;

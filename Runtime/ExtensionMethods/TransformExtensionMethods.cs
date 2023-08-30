@@ -20,5 +20,20 @@ namespace SensenToolkit
                 GameObject.Destroy(child.gameObject);
             }
         }
+
+        public static string FullPath(this Transform transform)
+        {
+            List<string> fullPathList = new();
+
+            Transform currentTransform = transform;
+            while (currentTransform != null)
+            {
+                fullPathList.Add(currentTransform.gameObject.name);
+                currentTransform = currentTransform.parent;
+            }
+
+            fullPathList.Reverse();
+            return string.Join("/", fullPathList);
+        }
     }
 }
