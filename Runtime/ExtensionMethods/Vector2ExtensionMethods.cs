@@ -62,5 +62,13 @@ namespace SensenToolkit
                 y: y ?? vec.y
             );
         }
+
+        public static Vector2Int AsVector2Int(this Vector2 vec)
+        {
+            return new Vector2Int(
+                x: Mathf.RoundToInt(vec.x),
+                y: Mathf.RoundToInt(vec.y)
+            );
+        }
     }
 }

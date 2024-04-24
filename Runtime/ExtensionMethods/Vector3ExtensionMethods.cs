@@ -16,9 +16,22 @@ namespace SensenToolkit
         {
             return new Vector3(v3.x, v3.y, v3.z);
         }
+        public static Vector3 XZY(this Vector3 v3)
+        {
+            return new Vector3(v3.x, v3.z, v3.y);
+        }
         public static Vector2 XY(this Vector3 v3)
         {
-            return new Vector2(v3.x, v3.y);
+            return (Vector2)v3;
+        }
+
+        public static Vector3Int AsVector3Int(this Vector3 v3)
+        {
+            return new Vector3Int(
+                Mathf.RoundToInt(v3.x),
+                Mathf.RoundToInt(v3.y),
+                Mathf.RoundToInt(v3.z)
+            );
         }
 
         public static Vector3 Clone(this Vector3 v3, float? x = null, float? y = null, float? z = null)
