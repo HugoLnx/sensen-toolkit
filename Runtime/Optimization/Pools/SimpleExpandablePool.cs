@@ -3,15 +3,25 @@ using System.Collections.Generic;
 
 namespace SensenToolkit.Pools
 {
-    public class SimpleExpandablePool<T> : ISimplePool<T>
+    public class SimpleExpandablePool<T> : IReleasablePool<T>
     {
         private readonly Func<T> _factory;
         private readonly Queue<T> _resources = new();
         private readonly int _minSize;
         private readonly int _maxCreations;
         public HashSet<T> Creations { get; } = new();
+        private bool HasAvailableResource => _resources.Count > 0;
+        private bool CanCreateMore => Creations.Count < _maxCreations;
+        public bool CanProvide => HasAvailableResource || CanCreateMore;
 
-        public SimpleExpandablePool(Func<T> factory, int minSize = 20, int? maxCreations = null, bool prefill = true)
+        public int MaxCreations => _maxCreations;
+
+        public SimpleExpandablePool(
+            Func<T> factory,
+            int minSize = 20,
+            int? maxCreations = null,
+            bool prefill = true
+        )
         {
             _factory = factory;
             _minSize = minSize;
@@ -39,6 +49,10 @@ namespace SensenToolkit.Pools
 
         public void Release(T obj)
         {
+            if (_resources.Count >= _maxCreations)
+            {
+                return;
+            }
             _resources.Enqueue(obj);
         }
 
