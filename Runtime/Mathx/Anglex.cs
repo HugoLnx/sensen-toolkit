@@ -10,9 +10,9 @@ namespace SensenToolkit.Mathx
         public static bool AngleIsBetween(float degrees, float min, float max)
         {
             float rangeSize = max - min;
-            if (rangeSize*rangeSize >= 360f*360f) return true;
-            degrees = NormalizeAngle(degrees-min);
-            float maxNorm = NormalizeAngle(max-min);
+            if (rangeSize * rangeSize >= 360f * 360f) return true;
+            degrees = NormalizeAngle(degrees - min);
+            float maxNorm = NormalizeAngle(max - min);
             return degrees <= maxNorm;
         }
 
@@ -26,13 +26,15 @@ namespace SensenToolkit.Mathx
                 return normalize ? NormalizeAngle(degrees) : RelocateAngleToRange(degrees, min, max);
             }
 
-            float degreesRelative = NormalizeAngle(degrees-min);
-            float maxRelative = NormalizeAngle(max-min);
+            float degreesRelative = NormalizeAngle(degrees - min);
+            float maxRelative = NormalizeAngle(max - min);
             float distanceToReflection = 180f - maxRelative;
             float middleBetweenReflectionAndRange = maxRelative + (distanceToReflection / 2f);
 
             float relativeResult;
-            if (includeReflection && degreesRelative > middleBetweenReflectionAndRange && degreesRelative < middleBetweenReflectionAndRange + 180f) {
+            if (includeReflection && degreesRelative > middleBetweenReflectionAndRange
+                && degreesRelative < middleBetweenReflectionAndRange + 180f)
+            {
                 relativeResult = degreesRelative < 180f ? 180f : maxRelative + 180f;
             }
             else
@@ -48,11 +50,11 @@ namespace SensenToolkit.Mathx
             degrees = NormalizeAngle(degrees);
             if (max < 0 && degrees >= NormalizeAngle(max))
             {
-                return max + NormalizeAngle(degrees-max);
+                return max + NormalizeAngle(degrees - max);
             }
             else
             {
-                return min + NormalizeAngle(degrees-min);
+                return min + NormalizeAngle(degrees - min);
             }
         }
 
