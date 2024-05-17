@@ -23,6 +23,22 @@ namespace SensenToolkit
             }
         }
 
+        public static void IsTrue(bool v, string message)
+        {
+            if (!v)
+            {
+                throw new InvalidOperationException(FormatMessage(message, "condition is false"));
+            }
+        }
+
+        public static void IsFalse(bool v, string message)
+        {
+            if (v)
+            {
+                throw new InvalidOperationException(FormatMessage(message, "condition is true"));
+            }
+        }
+
         private static string FormatMessage(string message, string defaultMessage)
         {
             return message ?? $"Assetx failed: {defaultMessage}";
