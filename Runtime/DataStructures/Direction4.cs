@@ -7,7 +7,8 @@ namespace SensenToolkit.Utils
 {
     public sealed class Direction4
     {
-        public enum Direction {
+        public enum Direction
+        {
             Right,
             Down,
             Left,
@@ -17,7 +18,7 @@ namespace SensenToolkit.Utils
         public static readonly Direction4 Down = new(Vector2.down, Direction.Down);
         public static readonly Direction4 Left = new(Vector2.left, Direction.Left);
         public static readonly Direction4 Up = new(Vector2.up, Direction.Up);
-        public static readonly List<(Direction, Direction4)> All = new()
+        private static readonly List<(Direction, Direction4)> s_enumMap = new()
         {
             (Direction.Up, Up),
             (Direction.Right, Right),
@@ -41,6 +42,17 @@ namespace SensenToolkit.Utils
             {Down, (Right, Left)},
             {Left, (Down, Up)},
         };
+
+        public static IEnumerable<Direction4> All
+        {
+            get
+            {
+                foreach ((_, Direction4 direction) in s_enumMap)
+                {
+                    yield return direction;
+                }
+            }
+        }
 
         public float MyAxisCoordinate(Vector2 size)
             => IsHorizontal ? size.x : size.y;

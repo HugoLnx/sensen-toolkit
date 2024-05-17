@@ -25,7 +25,7 @@ namespace Sensen.Toolkit.Utils
         public static readonly Direction8 DownLeft = new((Vector2.down + Vector2.left).normalized);
         public static readonly Direction8 UpRight = new((Vector2.up + Vector2.right).normalized);
         public static readonly Direction8 UpLeft = new((Vector2.up + Vector2.left).normalized);
-        public static readonly List<(Direction, Direction8)> All = new() {
+        private static readonly List<(Direction, Direction8)> s_enumMap = new() {
             (Direction.Up, Up),
             (Direction.UpRight, UpRight),
             (Direction.Right, Right),
@@ -45,6 +45,17 @@ namespace Sensen.Toolkit.Utils
             {UpRight, DownLeft},
             {UpLeft, DownRight}
         };
+
+        public static IEnumerable<Direction8> All
+        {
+            get
+            {
+                foreach ((_, Direction8 direction) in s_enumMap)
+                {
+                    yield return direction;
+                }
+            }
+        }
 
         public Vector2 Vector { get; }
         public Vector2Int VectorInt { get; }
