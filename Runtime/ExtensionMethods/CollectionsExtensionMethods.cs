@@ -10,6 +10,20 @@ namespace SensenToolkit
             return source.OrderBy(x => UnityEngine.Random.value);
         }
 
+        public static IEnumerable<T> GetRandomElements<T>(this IEnumerable<T> source, int amount)
+        {
+            return source.Shuffle().Take(amount);
+        }
+
+        public static T GetRandomElement<T>(this IEnumerable<T> source)
+        {
+            int count = source.Count();
+            if (count == 0) return default;
+
+            int index = UnityEngine.Random.Range(0, count);
+            return source.ElementAt(index);
+        }
+
         public static Stack<T> ToStack<T>(this IEnumerable<T> source)
         {
             return new(source);
