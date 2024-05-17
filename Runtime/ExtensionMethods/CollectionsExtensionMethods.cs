@@ -10,6 +10,16 @@ namespace SensenToolkit
             return source.OrderBy(x => UnityEngine.Random.value);
         }
 
+        public static Stack<T> ToStack<T>(this IEnumerable<T> source)
+        {
+            return new(source);
+        }
+
+        public static Queue<T> ToQueue<T>(this IEnumerable<T> source)
+        {
+            return new(source);
+        }
+
         public static IEnumerable<IEnumerable<T>> SlicesOf<T>(this IEnumerable<T> source, int size)
         {
             List<T> list = new(size);
