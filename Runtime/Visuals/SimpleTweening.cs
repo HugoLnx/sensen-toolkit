@@ -34,8 +34,8 @@ namespace Sensen.Toolkit
 
         public static Sequence Flash(
             System.Action<float> action,
-            float durationIn,
-            float durationOut,
+            float durationIn = 0.1f,
+            float durationOut = 0.1f,
             float lowValue = 0f,
             float highValue = 1f,
             Ease easeIn = Ease.OutSine,
