@@ -1,3 +1,4 @@
+#if DOTWEEN
 using DG.Tweening;
 
 namespace SensenToolkit.Lerp
@@ -24,3 +25,4 @@ namespace SensenToolkit.Lerp
         }
     }
 }
+#endif

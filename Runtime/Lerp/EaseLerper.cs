@@ -1,3 +1,4 @@
+#if DOTWEEN
 using System;
 using DG.Tweening;
 using UnityEngine;
@@ -53,3 +54,4 @@ namespace SensenToolkit.Lerp
         }
     }
 }
+#endif
