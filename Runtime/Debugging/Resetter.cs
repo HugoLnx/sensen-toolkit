@@ -59,12 +59,12 @@ namespace SensenToolkit.Debugging
         {
             if (_body != null)
             {
-                _body.velocity = Vector3.zero;
+                _body.linearVelocity = Vector3.zero;
                 _body.angularVelocity = Vector3.zero;
             }
             if (_body2d != null)
             {
-                _body2d.velocity = Vector2.zero;
+                _body2d.linearVelocity = Vector2.zero;
                 _body2d.angularVelocity = 0f;
             }
         }
