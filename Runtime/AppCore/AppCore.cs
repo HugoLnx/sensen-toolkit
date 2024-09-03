@@ -29,25 +29,35 @@ namespace SensenToolkit
 
         [SerializeField] private Transform _callbacksContainer;
 
-        /// <summary>
-        /// Run the action only once in the game lifetime. Don't pass a method directly, use a lambda instead.
-        /// </summary>
-        public static void RunOnceInWholeGame(System.Action action)
+        public static void RunOnlyOnce(object id, Action action)
         {
             if (action == null) return;
-            int hash = action.GetHashCode();
+            int hash = id.GetHashCode();
             if (s_lifetimeActions.Contains(hash)) return;
             s_lifetimeActions.Add(hash);
             action();
         }
 
-        public static void RunOncePerScene(System.Action action)
+        /// <summary>
+        /// Run the action only once in the game lifetime. Don't pass a instance method directly, use a lambda or a static method.
+        /// </summary>
+        public static void RunOnlyOnce(System.Action action)
+        {
+            RunOnlyOnce(action, action);
+        }
+
+        public static void RunOncePerScene(object id, System.Action action)
         {
             if (action == null) return;
-            int hash = action.GetHashCode();
+            int hash = id.GetHashCode();
             if (s_sceneActions.Contains(hash)) return;
             s_sceneActions.Add(hash);
             action();
+        }
+
+        public static void RunOncePerScene(System.Action action)
+        {
+            RunOncePerScene(action, action);
         }
 
         // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
