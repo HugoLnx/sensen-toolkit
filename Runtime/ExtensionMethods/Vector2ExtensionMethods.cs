@@ -70,5 +70,14 @@ namespace SensenToolkit
                 y: Mathf.RoundToInt(vec.y)
             );
         }
+
+        public static Vector2 SetOnly(this Vector2 vec, float? x = null, float? y = null)
+        {
+            vec.Set(
+                x ?? vec.x,
+                y ?? vec.y
+            );
+            return vec;
+        }
     }
 }

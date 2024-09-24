@@ -42,5 +42,15 @@ namespace SensenToolkit
                 z ?? v3.z
             );
         }
+
+        public static Vector3 SetOnly(this Vector3 v3, float? x = null, float? y = null, float? z = null)
+        {
+            v3.Set(
+                x ?? v3.x,
+                y ?? v3.y,
+                z ?? v3.z
+            );
+            return v3;
+        }
     }
 }
