@@ -2,7 +2,9 @@
     "name": "Sensen.Toolkit.Runtime",
     "rootNamespace": "",
     "references": [
-        "GUID:f24cf67903b27ae498b3069ecc30cc11"
+        "GUID:f24cf67903b27ae498b3069ecc30cc11",
+        "GUID:48c9f6afdac61634db0e0f241c7d4d51",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
