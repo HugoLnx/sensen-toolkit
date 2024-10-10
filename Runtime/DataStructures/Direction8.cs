@@ -59,6 +59,8 @@ namespace Sensen.Toolkit.Utils
 
         public Vector2 Vector { get; }
         public Vector2Int VectorInt { get; }
+        public Vector3 Vector3 { get; }
+        public Vector3Int Vector3Int { get; }
         public float Angle { get; }
         public bool IsVertical => Vector.x == 0f;
         public bool IsHorizontal => Vector.y == 0f;
@@ -67,7 +69,9 @@ namespace Sensen.Toolkit.Utils
         private Direction8(Vector2 vector)
         {
             this.Vector = vector;
+            this.Vector3 = vector;
             this.VectorInt = new Vector2Int(x: Mathf.CeilToInt(vector.x), y: Mathf.CeilToInt(vector.y));
+            this.Vector3Int = new Vector3Int(VectorInt.x, VectorInt.y, 0);
             this.Angle = Vector2.SignedAngle(Vector2.right, vector);
         }
 
