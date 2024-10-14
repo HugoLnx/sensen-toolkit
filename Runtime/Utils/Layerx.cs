@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace SensenToolkit
 {
-    public static class PhysicsCollisionMatrix
+    public static class Layerx
     {
         private static Dictionary<int, int> s_masksByLayer;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        public static void Init()
+        private static void Init()
         {
             s_masksByLayer = new Dictionary<int, int>();
             for (int i = 0; i < 32; i++)
@@ -33,6 +33,16 @@ namespace SensenToolkit
         public static int MaskForWhatDoesntCollideWith(int layer)
         {
             return ~s_masksByLayer[layer];
+        }
+
+        public static int BuildLayerMask(params int[] layers)
+        {
+            int mask = 0x00;
+            foreach (int layer in layers)
+            {
+                mask |= 1 << layer;
+            }
+            return mask;
         }
     }
 }
