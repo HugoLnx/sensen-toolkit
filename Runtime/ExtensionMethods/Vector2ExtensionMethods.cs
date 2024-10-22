@@ -71,6 +71,11 @@ namespace SensenToolkit
             );
         }
 
+        public static Vector3 AsVector3(this Vector2 vec, float z = 0)
+        {
+            return new Vector3(vec.x, vec.y, z);
+        }
+
         public static Vector2 SetOnly(this Vector2 vec, float? x = null, float? y = null)
         {
             vec.Set(
