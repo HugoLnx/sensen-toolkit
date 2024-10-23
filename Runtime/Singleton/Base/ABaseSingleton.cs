@@ -20,6 +20,17 @@ namespace SensenToolkit.Internal
         private static Logx s_logger;
         private static Logx Logger => s_logger ??= Logx.GetLogger(LOGGER_ID);
 
+        public static void AddAssignListener(Action<T> setSingleton)
+        {
+            OnSetSingleton += setSingleton;
+            if (HasInstance) setSingleton(s_instance);
+        }
+
+        public static void RemoveAssignListener(Action<T> setSingleton)
+        {
+            OnSetSingleton -= setSingleton;
+        }
+
 
         private static T GetOrSetInstance()
         {
