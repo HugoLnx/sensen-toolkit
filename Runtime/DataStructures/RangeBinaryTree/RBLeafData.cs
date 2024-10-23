@@ -1,4 +1,4 @@
-namespace SensenToolkit.DataStructures.RangeBinaryTree
+namespace SensenToolkit
 {
     public class RBLeafData<T>
     {

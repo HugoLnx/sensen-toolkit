@@ -1,7 +1,6 @@
 using System;
-using SensenToolkit.Mathx;
 
-namespace SensenToolkit.DataStructures
+namespace SensenToolkit
 {
     public readonly struct IntRange : IEquatable<IntRange>
     {

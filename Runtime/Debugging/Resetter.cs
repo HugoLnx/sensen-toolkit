@@ -1,8 +1,7 @@
 using System.Collections;
-// using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace SensenToolkit.Debugging
+namespace SensenToolkit
 {
     public class Resetter : MonoBehaviour
     {

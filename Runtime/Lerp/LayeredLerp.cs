@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using SensenToolkit.Mathx;
 using UnityEngine;
 
-namespace SensenToolkit.Lerp
+namespace SensenToolkit
 {
     public class LayeredLerp<T>
     {

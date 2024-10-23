@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using SensenToolkit.Mathx;
+using SensenToolkit;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 public class SegmentTests
 {

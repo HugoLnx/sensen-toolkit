@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using SensenToolkit.DataStructures;
-using UnityEngine;
-using UnityEngine.TestTools;
+using SensenToolkit;
 
 public class RangeTests
 {

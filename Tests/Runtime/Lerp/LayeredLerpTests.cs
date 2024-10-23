@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using SensenToolkit.Lerp;
-using UnityEngine;
-using UnityEngine.TestTools;
+using SensenToolkit;
 
 public class LayeredLerpTests
 {

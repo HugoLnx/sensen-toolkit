@@ -1,6 +1,4 @@
-using SensenToolkit.Mathx;
-
-namespace SensenToolkit.Lerp
+namespace SensenToolkit
 {
     // TODO: Make it Garbageless
     // - Make tests for that class

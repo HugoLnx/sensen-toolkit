@@ -1,4 +1,4 @@
-namespace SensenToolkit.DataStructures
+namespace SensenToolkit
 {
     public class CircularLinkedListNode<T>
     {

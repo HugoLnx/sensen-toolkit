@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SensenToolkit.Pools
+namespace SensenToolkit
 {
     public interface ISimplePool<T>
     {

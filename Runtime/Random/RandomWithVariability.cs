@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mathf = UnityEngine.Mathf;
 
-namespace SensenToolkit.Rand
+namespace SensenToolkit
 {
     public class RandomWithVariability
     {
@@ -12,7 +11,7 @@ namespace SensenToolkit.Rand
         private readonly float percentReductionOnSelect;
         private readonly Dictionary<int, float> absoluteIncrease;
         private readonly bool noSequentialRepetition;
-        private readonly Random rand = new();
+        private readonly System.Random rand = new();
 
         private int Count => probabilities.Length;
         private float ProbabilitiesSum => probabilities.Sum();

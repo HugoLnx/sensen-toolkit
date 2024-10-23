@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Sensen.Toolkit.Utils
+namespace SensenToolkit
 {
     public sealed class Direction8
     {
-        public enum Direction {
+        public enum Direction
+        {
             Right,
             Down,
             Left,

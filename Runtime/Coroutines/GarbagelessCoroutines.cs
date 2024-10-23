@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using SensenToolkit.Pools;
 using UnityEngine;
 
-namespace SensenToolkit.Coroutines
+namespace SensenToolkit
 {
     public static class GarbagelessCoroutines
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SensenToolkit.DataStructures.RangeBinaryTree
+namespace SensenToolkit
 {
     public class RangeBuildingStep<T>
     {

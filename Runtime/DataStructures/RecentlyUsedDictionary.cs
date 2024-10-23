@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using SensenToolkit.Pools;
 
-namespace SensenToolkit.DataStructures
+namespace SensenToolkit
 {
     /*
         * This class is a dictionary that keeps track of the most recently used keys.

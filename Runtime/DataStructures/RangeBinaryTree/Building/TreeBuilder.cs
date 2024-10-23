@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using SensenToolkit.Mathx;
 
-namespace SensenToolkit.DataStructures.RangeBinaryTree
+namespace SensenToolkit
 {
     public static class TreeBuilder
     {

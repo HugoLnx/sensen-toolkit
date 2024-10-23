@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SensenToolkit.DataStructures.RangeBinaryTree
+namespace SensenToolkit
 {
     public static class RBTree
     {

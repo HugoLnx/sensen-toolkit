@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using SensenToolkit.DataStructures;
 
 namespace SensenToolkit
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace SensenToolkit.DataStructures.RangeBinaryTree
+namespace SensenToolkit
 {
     [Serializable]
     public class IntersectingSegmentsException : Exception

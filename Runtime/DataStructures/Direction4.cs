@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SensenToolkit.Utils
+namespace SensenToolkit
 {
     public sealed class Direction4
     {

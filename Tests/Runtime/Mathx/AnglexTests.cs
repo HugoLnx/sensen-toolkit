@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
-using UnityEngine.TestTools.Utils;
-using SensenToolkit.Mathx;
+using SensenToolkit;
 
 public class AnglexTests
 {

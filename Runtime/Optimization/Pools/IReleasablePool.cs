@@ -1,4 +1,4 @@
-namespace SensenToolkit.Pools
+namespace SensenToolkit
 {
     public interface IReleasablePool<T> : ISimplePool<T>
     {

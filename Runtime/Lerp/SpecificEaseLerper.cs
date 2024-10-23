@@ -1,7 +1,7 @@
 #if DOTWEEN
 using DG.Tweening;
 
-namespace SensenToolkit.Lerp
+namespace SensenToolkit
 {
     public class SpecificEaseLerper : ILerper<float>
     {

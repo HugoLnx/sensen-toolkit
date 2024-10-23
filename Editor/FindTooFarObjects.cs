@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using SensenToolkit.Mathx;
+using SensenToolkit;
 
 namespace SensenToolkit.EditorToolkit
 {

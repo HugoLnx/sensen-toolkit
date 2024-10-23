@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using SensenToolkit.DataStructures.RangeBinaryTree;
-using SensenToolkit.Mathx;
 using UnityEngine;
 
-namespace SensenToolkit.TwoDimensions
+namespace SensenToolkit
 {
     public class EdgeColliderIndexFactory
     {
@@ -28,7 +26,7 @@ namespace SensenToolkit.TwoDimensions
                 if (!entry.Segment.HasValue) continue;
                 Segment seg = entry.Segment.Value;
                 leaves.Add(new RBLeafData<EdgeColliderIndexEntry?>(
-                    range: new DataStructures.Range(seg.Begin.x, seg.End.x),
+                    range: new Range(seg.Begin.x, seg.End.x),
                     content: entry
                 ));
             }

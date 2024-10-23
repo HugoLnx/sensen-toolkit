@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using SensenToolkit.Mathx;
 using UnityEngine;
 
-namespace SensenToolkit.DataStructures
+namespace SensenToolkit
 {
     public readonly struct Range : IEquatable<Range>
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SensenToolkit.Lerp
+namespace SensenToolkit
 {
     public class FloatLerper : IFullLerper<float>
     {

@@ -1,12 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using SensenToolkit.Mathx;
 using UnityEngine;
-using SensenToolkit.DataStructures.RangeBinaryTree;
 using System.Linq;
 
-namespace SensenToolkit.TwoDimensions
+namespace SensenToolkit
 {
     public struct EdgeColliderIndexEntry
     {
@@ -19,7 +14,7 @@ namespace SensenToolkit.TwoDimensions
 
     public class EdgeColliderIndex
     {
-        public DataStructures.Range XRange { get; }
+        public Range XRange { get; }
         private EdgeColliderIndexEntry[] _entries;
         private RBTree<EdgeColliderIndexEntry?> _index;
 
@@ -44,11 +39,11 @@ namespace SensenToolkit.TwoDimensions
             return _entries[inx];
         }
 
-        private static DataStructures.Range GetXRangeFrom(EdgeColliderIndexEntry[] entries)
+        private static Range GetXRangeFrom(EdgeColliderIndexEntry[] entries)
         {
             Segment first = entries.First(e => e.Segment.HasValue).Segment.Value;
             Segment last = entries.Last(e => e.Segment.HasValue).Segment.Value;
-            return new DataStructures.Range(
+            return new Range(
                 begin: first.Begin.x,
                 end: last.End.x
             );

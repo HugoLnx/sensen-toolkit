@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SensenToolkit.Pools
+namespace SensenToolkit
 {
     public class SimpleExpandablePool<T> : IReleasablePool<T>
     {

@@ -1,5 +1,4 @@
 using System;
-using SensenToolkit.Pools;
 
 namespace SensenToolkit
 {

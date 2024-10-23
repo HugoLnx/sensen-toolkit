@@ -1,4 +1,3 @@
-using SensenToolkit.Mathx;
 using UnityEngine;
 
 namespace SensenToolkit

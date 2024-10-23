@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace SensenToolkit.Mathx
+namespace SensenToolkit
 {
     public readonly struct Segment
     {

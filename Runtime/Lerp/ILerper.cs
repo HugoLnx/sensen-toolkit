@@ -1,4 +1,4 @@
-namespace SensenToolkit.Lerp
+namespace SensenToolkit
 {
     public interface ILerper<T>
     {

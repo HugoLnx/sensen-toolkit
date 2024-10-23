@@ -1,6 +1,6 @@
 using System;
 
-namespace SensenToolkit.Lerp
+namespace SensenToolkit
 {
     public class LayeredLerpBuildException : Exception
     {

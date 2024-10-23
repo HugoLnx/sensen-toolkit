@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SensenToolkit.DataStructures
+namespace SensenToolkit
 {
     public class CircularLinkedList<T>
     {

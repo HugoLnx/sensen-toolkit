@@ -1,7 +1,6 @@
-using SensenToolkit.Mathx;
 using UnityEngine;
 
-namespace SensenToolkit.Lerp
+namespace SensenToolkit
 {
     public class Vector2RotationLerper : IFullLerper<Vector2>
     {
