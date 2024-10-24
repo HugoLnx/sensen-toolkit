@@ -75,6 +75,9 @@ namespace SensenToolkit
             OnSceneLoadEnd = null;
             OnSceneUnloadStart = null;
             OnSceneUnloadEnd = null;
+            IsSceneLoading = false;
+            IsSceneUnloading = false;
+            IsQuitting = false;
 
             OnSceneLoadStart += _ =>
             {

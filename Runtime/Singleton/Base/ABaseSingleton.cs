@@ -42,16 +42,18 @@ namespace SensenToolkit.Internal
             if (IsTransient && AppCore.IsSceneUnloading)
             {
                 // Scene is unloading, should not create new instance
+                Debug.Log($"[{typeof(T).Name}] Scene is unloading, should not create new instance");
                 return null;
             }
 
             if (AppCore.IsQuitting)
             {
                 // Application is quitting, should not create new instance
+                Debug.Log($"[{typeof(T).Name}] Application is quitting, should not create new instance");
                 return null;
             }
 
-            if (TrySetAndInitializeInstance(FindObjectOfType<T>()))
+            if (TrySetAndInitializeInstance(FindFirstObjectByType<T>()))
             {
 
                 Assertx.IsNotNull(s_instance);
