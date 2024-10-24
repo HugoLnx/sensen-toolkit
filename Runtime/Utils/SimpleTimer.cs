@@ -11,6 +11,7 @@ namespace SensenToolkit
         private float _durationSecs;
 
         public bool IsStopped => !IsRunning;
+        public bool HasEnded { get; private set; } = false;
         public bool IsRunning => !IsPaused && RemainingTime > 0;
         public bool IsPaused => _delayedResetCancellation == null && RemainingTime > 0;
         public float RemainingTime { get; private set; } = 0f;
@@ -22,31 +23,39 @@ namespace SensenToolkit
             _durationSecs = cooldownSecs;
         }
 
-        public void Restart()
+        public SimpleTimer Restart()
         {
+            HasEnded = false;
             RemainingTime = _durationSecs;
             Resume();
+            return this;
         }
 
-        public void Stop()
+        public SimpleTimer Stop()
         {
+            HasEnded = false;
             Pause();
             RemainingTime = 0f;
+            return this;
         }
 
-        public void Resume()
+        public SimpleTimer Reset() => Stop();
+
+        public SimpleTimer Resume()
         {
-            if (_delayedResetCancellation != null) return;
+            if (_delayedResetCancellation != null) return this;
             if (RemainingTime <= 0) throw new InvalidOperationException("Timer is not running");
 
             _delayedResetCancellation = new CancellationTokenSource();
             UniTask.Void(DelayedReset, _delayedResetCancellation.Token);
+            return this;
         }
 
-        public void Pause()
+        public SimpleTimer Pause()
         {
             _delayedResetCancellation?.Cancel();
             _delayedResetCancellation = null;
+            return this;
         }
 
         private async UniTaskVoid DelayedReset(CancellationToken cancelToken)
@@ -57,6 +66,7 @@ namespace SensenToolkit
                 RemainingTime -= Time.deltaTime;
             }
             Stop();
+            HasEnded = true;
         }
 
         public void SetDurationSecs(float durationSecs)
