@@ -28,6 +28,9 @@ namespace SensenToolkit.Internal
 
         public static void RemoveAssignListener(Action<T> setSingleton)
         {
+#if UNITY_EDITOR
+            AssertIsMethod(setSingleton);
+#endif
             OnSetSingleton -= setSingleton;
         }
 
@@ -92,6 +95,14 @@ namespace SensenToolkit.Internal
         protected sealed override void OnDestroySingletonInternal()
         {
             s_instance = null;
+        }
+
+        private static void AssertIsMethod(System.Delegate act)
+        {
+            if (Reflectionx.IsAnonymousMethod(act))
+            {
+                throw new Exception("Action must be a method reference, otherwise it will not be removed properly");
+            }
         }
     }
 }
