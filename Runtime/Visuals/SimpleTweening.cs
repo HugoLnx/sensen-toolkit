@@ -1,4 +1,5 @@
 #if DOTWEEN
+using System;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -39,14 +40,25 @@ namespace SensenToolkit
             float durationOut = 0.1f,
             float lowValue = 0f,
             float highValue = 1f,
+            float? startValue = null,
             Ease easeIn = Ease.OutSine,
             Ease easeOut = Ease.InSine
         )
         {
+            startValue ??= lowValue;
             return DOTween.Sequence()
-                .Append(FromTo(action, duration: durationIn, endValue: highValue, startValue: lowValue).SetEase(easeIn))
+                .Append(FromTo(action, duration: durationIn, endValue: highValue, startValue: startValue).SetEase(easeIn))
                 .Append(FromTo(action, duration: durationOut, endValue: lowValue, startValue: highValue).SetEase(easeOut))
                 .Play();
+        }
+
+        public static void KillAndNullify(ref Tween tween)
+        {
+            if (tween != null && tween.IsActive())
+            {
+                tween.Kill();
+            }
+            tween = null;
         }
     }
 }
