@@ -6,18 +6,34 @@ namespace SensenToolkit
 {
     public static class TransformExtensionMethods
     {
-        public static void DestroyAllChildren(this Transform transform, IEnumerable<Transform> except = null)
+        private static readonly List<Transform> s_childrenBuffer = new();
+        public static void DestroyAllChildren(this Transform transform, IEnumerable<Transform> except = null, bool immediate = false)
         {
             HashSet<int> exceptIds = except != null
                 ? new HashSet<int>(except.Select(t => t.GetInstanceID()))
                 : null;
+            s_childrenBuffer.Clear();
             foreach (Transform child in transform)
             {
                 if (exceptIds?.Contains(child.GetInstanceID()) == true)
                 {
                     continue;
                 }
-                GameObject.Destroy(child.gameObject);
+                s_childrenBuffer.Add(child);
+            }
+            if (immediate)
+            {
+                foreach (Transform child in s_childrenBuffer)
+                {
+                    GameObject.DestroyImmediate(child.gameObject);
+                }
+            }
+            else
+            {
+                foreach (Transform child in s_childrenBuffer)
+                {
+                    GameObject.Destroy(child.gameObject);
+                }
             }
         }
 
