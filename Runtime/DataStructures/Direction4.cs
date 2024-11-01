@@ -74,6 +74,7 @@ namespace SensenToolkit
         public float Angle { get; }
 
         public Direction Enum { get; }
+        public string Name { get; }
 
         public bool IsVertical => Vector.x == 0f;
         public bool IsHorizontal => Vector.y == 0f;
@@ -89,6 +90,7 @@ namespace SensenToolkit
             this.VectorInt = vector.AsVector2Int();
             this.Angle = vector.Angle();
             this.Enum = directionEnum;
+            this.Name = System.Enum.GetName(typeof(Direction), directionEnum);
         }
 
         public static Direction4 FromEnum(Direction v)
