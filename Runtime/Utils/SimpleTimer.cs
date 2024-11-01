@@ -18,6 +18,8 @@ namespace SensenToolkit
 
         private CancellationTokenSource _delayedResetCancellation;
 
+        public event Action OnEnd;
+
         public SimpleTimer(float cooldownSecs)
         {
             _durationSecs = cooldownSecs;
@@ -67,6 +69,7 @@ namespace SensenToolkit
             }
             Stop();
             HasEnded = true;
+            OnEnd?.Invoke();
         }
 
         public void SetDurationSecs(float durationSecs)
