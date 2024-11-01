@@ -25,6 +25,11 @@ namespace SensenToolkit
             return (Vector2)v3;
         }
 
+        public static Vector3 Abs(this Vector3 v3)
+        {
+            return new Vector3(Mathf.Abs(v3.x), Mathf.Abs(v3.y), Mathf.Abs(v3.z));
+        }
+
         public static Vector3Int AsVector3Int(this Vector3 v3)
         {
             return new Vector3Int(
