@@ -22,5 +22,13 @@ namespace SensenToolkit
             Gizmos.DrawLine(to, to + arrowHeadVector.RotateBy(30f));
             Gizmos.DrawLine(to, to + arrowHeadVector.RotateBy(-30));
         }
+
+        public static void DebugDrawPointAsterist(Vector3 point, Color? color = null, float size = 0.2f, float duration = 0.5f)
+        {
+            color ??= UnityEngine.Color.green;
+            Debug.DrawLine(point + Vector3.one * size, point - Vector3.one * size, color.Value, duration);
+            Debug.DrawLine(point + new Vector3(1f, 1f, -1f) * size, point - new Vector3(1f, 1f, -1f) * size, color.Value, duration);
+            Debug.DrawLine(point + new Vector3(1f, -1f, 1f) * size, point - new Vector3(1f, -1f, 1f) * size, color.Value, duration);
+        }
     }
 }
