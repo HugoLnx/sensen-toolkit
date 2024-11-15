@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using UnityEngine;
 
 namespace SensenToolkit
 {
     public static class Assertx
     {
+        [Conditional("UNITY_EDITOR")]
         public static void IsNotEmpty<T>(IReadOnlyCollection<T> collection, string message = null)
         {
             IsNotNull(collection, "collection is null");
@@ -15,6 +18,7 @@ namespace SensenToolkit
             }
         }
 
+        [Conditional("UNITY_EDITOR")]
         public static void IsNotNull(object obj, string message = null)
         {
             if (obj == null)
@@ -23,6 +27,7 @@ namespace SensenToolkit
             }
         }
 
+        [Conditional("UNITY_EDITOR")]
         public static void IsTrue(bool v, string message)
         {
             if (!v)
@@ -31,6 +36,7 @@ namespace SensenToolkit
             }
         }
 
+        [Conditional("UNITY_EDITOR")]
         public static void IsFalse(bool v, string message)
         {
             if (v)
@@ -42,6 +48,33 @@ namespace SensenToolkit
         private static string FormatMessage(string message, string defaultMessage)
         {
             return message ?? $"Assetx failed: {defaultMessage}";
+        }
+
+        [Conditional("UNITY_EDITOR")]
+        public static void IsNormalized(Vector3 direction, bool acceptZero = true)
+        {
+            float sqrMag = direction.sqrMagnitude;
+            bool isNormalized = Mathf.Approximately(sqrMag, 1f) || (acceptZero && Mathf.Approximately(sqrMag, 0f));
+            IsTrue(isNormalized, "Vector3 is not normalized");
+        }
+
+        [Conditional("UNITY_EDITOR")]
+        public static void IsNormalized(Vector2 direction, bool acceptZero = true)
+        {
+            IsNormalized(direction, acceptZero);
+        }
+
+        public static void OnlyOneHasValue(params object[] objects)
+        {
+            int count = 0;
+            foreach (object obj in objects)
+            {
+                if (obj != null)
+                {
+                    count++;
+                }
+            }
+            IsTrue(count == 1, "Only should have value");
         }
     }
 }
