@@ -1,9 +1,224 @@
 using NUnit.Framework;
 using SensenToolkit;
+using UnityEngine;
 
 public class AnglexTests
 {
-#region RelocateAngleToRange
+
+    #region FlatSignedAngle
+    [Test]
+    [Category("FlatSignedAngle")]
+    public void FlatSignedAngle_ReturnsAngleRelativeToAxis()
+    {
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.up, Vector3.right, Vector3.forward),
+            Is.EqualTo(-90f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.right, Vector3.up, Vector3.forward),
+            Is.EqualTo(90f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.up, Quaternion.Euler(0f, 0f, 30f) * Vector3.up, Vector3.forward),
+            Is.EqualTo(30f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.up, Quaternion.Euler(0f, 0f, -30f) * Vector3.up, Vector3.forward),
+            Is.EqualTo(-30f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.forward, Quaternion.Euler(30f, 0f, 0f) * Vector3.forward, Vector3.right),
+            Is.EqualTo(30f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.forward, Quaternion.Euler(-30f, 0f, 0f) * Vector3.forward, Vector3.right),
+            Is.EqualTo(-30f).Within(10e-3f)
+        );
+    }
+
+    [Test]
+    [Category("FlatSignedAngle")]
+    public void FlatSignedAngle_IgnoresAngleInOrthogonalAxes()
+    {
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.up, Quaternion.Euler(30f, 0f, 0f) * Vector3.up, Vector3.forward),
+            Is.EqualTo(0f).Within(10e-3f)
+        );
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.up, Quaternion.Euler(0f, 30f, 0f) * Vector3.up, Vector3.forward),
+            Is.EqualTo(0f).Within(10e-3f)
+        );
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.right, Quaternion.Euler(30f, 0f, 0f) * Vector3.right, Vector3.forward),
+            Is.EqualTo(0f).Within(10e-3f)
+        );
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.right, Quaternion.Euler(0f, 30f, 0f) * Vector3.right, Vector3.forward),
+            Is.EqualTo(0f).Within(10e-3f)
+        );
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.forward, Quaternion.Euler(0f, 30f, 0f) * Vector3.forward, Vector3.right),
+            Is.EqualTo(0f).Within(10e-3f)
+        );
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.forward, Quaternion.Euler(0f, 0f, 30f) * Vector3.forward, Vector3.right),
+            Is.EqualTo(0f).Within(10e-3f)
+        );
+    }
+
+
+    [Test]
+    [Category("FlatSignedAngle")]
+    public void FlatSignedAngle_ReturnsZero_WhenFromAndToVectorsAreEqual()
+    {
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.up, Vector3.up, Vector3.forward),
+            Is.EqualTo(0f).Within(10e-3f)
+        );
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.right, Vector3.right, Vector3.forward),
+            Is.EqualTo(0f).Within(10e-3f)
+        );
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.forward, Vector3.forward, Vector3.right),
+            Is.EqualTo(0f).Within(10e-3f)
+        );
+        Assert.That(
+            Anglex.FlatSignedAngle(Vector3.forward, Vector3.forward, Vector3.forward),
+            Is.EqualTo(0f).Within(10e-3f)
+        );
+    }
+    #endregion
+
+    #region AngleForQuaternionRelatedToAxis
+    [Test]
+    [Category("AngleForQuaternionRelatedToAxis")]
+    public void AngleForQuaternionRelatedToAxis_ReturnsAngleRelativeToAxis()
+    {
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(0f, 0f, 30f),
+                axis: Vector3.forward
+            ), Is.EqualTo(30f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(30f, 0f, 0f),
+                axis: Vector3.right
+            ), Is.EqualTo(30f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(0f, 30f, 0f),
+                axis: Vector3.up
+            ), Is.EqualTo(30f).Within(10e-3f)
+        );
+    }
+
+    [Test]
+    [Category("AngleForQuaternionRelatedToAxis")]
+    public void AngleForQuaternionRelatedToAxis_ReturnsNegativeAngleRelativeToAxis()
+    {
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(0f, 0f, -30f),
+                axis: Vector3.forward
+            ), Is.EqualTo(-30f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(0f, 0f, 30f),
+                axis: Vector3.back
+            ), Is.EqualTo(-30f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(-30f, 0f, 0f),
+                axis: Vector3.right
+            ), Is.EqualTo(-30f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(30f, 0f, 0f),
+                axis: Vector3.left
+            ), Is.EqualTo(-30f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(0f, -30f, 0f),
+                axis: Vector3.up
+            ), Is.EqualTo(-30f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(0f, 30f, 0f),
+                axis: Vector3.down
+            ), Is.EqualTo(-30f).Within(10e-3f)
+        );
+    }
+
+
+    [Test]
+    [Category("AngleForQuaternionRelatedToAxis")]
+    public void AngleForQuaternionRelatedToAxis_IgnoresRotationOnOrthogonalAxes()
+    {
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(30f, 0f, 0f),
+                axis: Vector3.up
+            ), Is.EqualTo(0f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(30f, 0f, 0f),
+                axis: Vector3.forward
+            ), Is.EqualTo(0f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(0f, 30f, 0f),
+                axis: Vector3.right
+            ), Is.EqualTo(0f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(0f, 30f, 0f),
+                axis: Vector3.forward
+            ), Is.EqualTo(0f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(0f, 0f, 30f),
+                axis: Vector3.right
+            ), Is.EqualTo(0f).Within(10e-3f)
+        );
+
+        Assert.That(
+            Anglex.AngleForQuaternionRelatedToAxis(
+                quaternion: Quaternion.Euler(0f, 0f, 30f),
+                axis: Vector3.up
+            ), Is.EqualTo(0f).Within(10e-3f)
+        );
+    }
+    #endregion
+
+    #region RelocateAngleToRange
     [Test]
     [Category("RelocateAngleToRange")]
     public void RelocateAngleToRange_ReturnOwnAngle_WhenItsWithinRange()
@@ -76,8 +291,8 @@ public class AnglexTests
             ), Is.EqualTo(390f).Within(10e-3f)
         );
     }
-#endregion
-#region ClampAngle
+    #endregion
+    #region ClampAngle
     [Test]
     [Category("ClampAngle")]
     public void ClampAngle_ReturnsOwnAngle_WhenItIsWithinRange()
@@ -138,7 +353,7 @@ public class AnglexTests
     {
         Assert.That(
             Anglex.ClampAngle(
-                degrees: 360f-30f,
+                degrees: 360f - 30f,
                 min: 0f,
                 max: 90f
             ), Is.EqualTo(0f).Within(10e-3f)
@@ -378,8 +593,8 @@ public class AnglexTests
             ), Is.EqualTo(480f).Within(10e-3f)
         );
     }
-#endregion
-#region ClampAngleWithReflection
+    #endregion
+    #region ClampAngleWithReflection
     [Test]
     [Category("ClampAngle_WithReflection")]
     public void ClampAngle_WithReflection_ReturnsOwnAngle_WhenItIsWithinRange()
@@ -953,8 +1168,8 @@ public class AnglexTests
             ), Is.EqualTo(660f).Within(10e-3f)
         );
     }
-#endregion
-#region NormalizeAngle
+    #endregion
+    #region NormalizeAngle
     [Test]
     [Category("NormalizeAngle")]
     public void NormalizeAngle_GetsItsEquivalentValueBetween0And360()
@@ -976,12 +1191,12 @@ public class AnglexTests
             Is.EqualTo(50f).Within(10e-3f)
         );
         Assert.That(
-            Anglex.NormalizeAngle((-360f*100f) + 60f),
+            Anglex.NormalizeAngle((-360f * 100f) + 60f),
             Is.EqualTo(60f).Within(10e-3f)
         );
     }
-#endregion
-#region AngleIsBetween
+    #endregion
+    #region AngleIsBetween
     [Test]
     [Category("AngleIsBetween")]
     public void AngleIsBetween_WorksWithRegularAngles()
@@ -1077,5 +1292,5 @@ public class AnglexTests
             Anglex.AngleIsBetween(9999f, min: 0f, max: 0f)
         );
     }
-#endregion
+    #endregion
 }

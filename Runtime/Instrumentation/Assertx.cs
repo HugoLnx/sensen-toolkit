@@ -76,5 +76,23 @@ namespace SensenToolkit
             }
             IsTrue(count == 1, "Only should have value");
         }
+
+        public static void IsNotZero(Vector3 vec, string message = null)
+        {
+            IsTrue(vec != Vector3.zero, message ?? "Vector3 shouldn't be zero");
+        }
+        public static void IsNotZero(Vector2 vec, string message = null)
+        {
+            IsTrue(vec != Vector2.zero, message ?? "Vector2 shouldn't be zero");
+        }
+        public static void IsNotZero(float value, string message = null)
+        {
+            IsTrue(!Mathf.Approximately(value, 0f), message ?? "Value shouldn't be zero");
+        }
+
+        public static void IsDifferent(Vector2 a, Vector2 b, string message = null)
+        {
+            IsTrue((a - b).sqrMagnitude > Mathf.Epsilon, message ?? "Vectors shouldn't be equal");
+        }
     }
 }

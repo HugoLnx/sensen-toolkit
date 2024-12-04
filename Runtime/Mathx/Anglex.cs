@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace SensenToolkit
@@ -93,6 +94,29 @@ namespace SensenToolkit
         public static Vector2 AngleToVector2(float angle)
         {
             return Math2Dx.RotateBy(angle, Vector2.right);
+        }
+
+        public static float FlatSignedAngle(Vector3 from, Vector3 to, Vector3 axis)
+        {
+            Assertx.IsNotZero(axis);
+            Assertx.IsNormalized(axis);
+            Vector3 fromPlaneVector = from - Vector3.Project(from, axis);
+            Vector3 toPlaneVector = to - Vector3.Project(to, axis);
+            return Vector3.SignedAngle(fromPlaneVector, toPlaneVector, axis);
+        }
+
+        public static float AngleForQuaternionRelatedToAxis(Quaternion quaternion, Vector3 axis)
+        {
+            if (quaternion == Quaternion.identity) return 0f;
+            Assertx.IsNotZero(axis);
+            Assertx.IsNormalized(axis);
+            // quaternion.ToAngleAxis(out float angle, out Vector3 quatAxis);
+            // float axesAngle = Vector3.Angle(quatAxis, axis);
+            // if (Mathf.Approximately(axesAngle, 0f)) return angle;
+            // if (Mathf.Approximately(axesAngle, 180f)) return -angle;
+            // var vec = Vector3.Cross(axis, quatAxis);
+            var vec = Vector3.Cross(axis, Mathf.Approximately(Mathf.Abs(axis.z), 1f) ? Vector3.up : Vector3.forward);
+            return FlatSignedAngle(vec, quaternion * vec, axis);
         }
     }
 }

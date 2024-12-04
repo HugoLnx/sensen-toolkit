@@ -83,5 +83,14 @@ namespace SensenToolkit
             );
             return vec;
         }
+
+        public static Vector2 RoundComponents(this Vector2 vec, int decimalPlaces = 0)
+        {
+            float multiplier = Mathf.Pow(10, decimalPlaces);
+            return new Vector2(
+                x: Mathf.Round(vec.x * multiplier) / multiplier,
+                y: Mathf.Round(vec.y * multiplier) / multiplier
+            );
+        }
     }
 }
