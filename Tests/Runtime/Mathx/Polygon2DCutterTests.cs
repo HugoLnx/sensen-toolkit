@@ -115,6 +115,113 @@ public class Polygon2DCutterTests
         );
     }
 
+
+    [Test]
+    public void ExampleThatShouldNotEnterAnEndlessLoop()
+    {
+        Polygon2D polygon = new(new Vector2[]
+        {
+            new(-0.55f, 0.49f),
+            new(-0.23f, -0.31f),
+
+            new(0.54f, 0.31f),
+            new(0.84f, 0.44f),
+            new(0.63f, 1.03f),
+        });
+        float angle = Mathf.Deg2Rad * 30f;
+        SimpleSegment2D cutSegment = new(
+            position: new(0f, 0f),
+            direction: new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)),
+            lengthForward: Mathf.Infinity,
+            lengthBackward: Mathf.Infinity
+        );
+
+        List<Polygon2D> sideA = new();
+        sideA.Add(new(new Vector2[]
+        {
+            new(-0.29f, -0.17f),
+            new(-0.23f, -0.31f),
+            new(0.54f, 0.31f),
+        }));
+
+        sideA.Add(new(new Vector2[]
+        {
+            new(0.54f, 0.31f),
+            new(0.84f, 0.44f),
+            new(0.83f, 0.48f),
+        }));
+
+        List<Polygon2D> sideB = new();
+        sideB.Add(new(new Vector2[]
+        {
+            new(-0.55f, 0.49f),
+            new(0.63f, 1.03f),
+            new(0.83f, 0.48f),
+            new(0.54f, 0.31f),
+            new(-0.29f, -0.17f),
+        }));
+
+        AssertCutResult(polygon, cutSegment, sideA, sideB);
+    }
+
+    [Test]
+    public void CutPolygonWithHole_FromTopToBottom()
+    {
+        //      |
+        //   +--x--+
+        //    \    |
+        //      x  |
+        //     /   |
+        //   +--x--+
+        //      |
+        //     \ /
+        Polygon2D polygon = new Polygon2DEasyBuilder()
+            .WorldPoint(Vector2.zero)
+            .NextPoint(Vector2.down + Vector2.right)
+            .NextPoint(Vector2.down + Vector2.left)
+            .NextPoint(Vector2.right * 2f)
+            .WorldPoint(new Vector2(2f, 0f))
+            .Build();
+
+        SimpleSegment2D cutSegment = new(
+            position: new(1f, 0f),
+            direction: Vector3.down,
+            lengthForward: Mathf.Infinity,
+            lengthBackward: Mathf.Infinity
+        );
+
+        List<Polygon2D> sideA = new();
+        sideA.Add(new Polygon2DEasyBuilder()
+            .WorldPoint(new Vector2(0f, 0f))
+            .NextPoint(Vector2.down + Vector2.right)
+            .NextPoint(Vector2.up)
+            .Build()
+        );
+        sideA.Add(new Polygon2DEasyBuilder()
+            .WorldPoint(new Vector2(1f, -1f))
+            .NextPoint(Vector2.down + Vector2.left)
+            .NextPoint(Vector2.right)
+            .Build()
+        );
+
+        List<Polygon2D> sideB = new();
+        sideB.Add(new Polygon2DEasyBuilder()
+            .WorldPoint(new Vector2(1f, 0f))
+            .NextPoint(Vector2.down)
+            .NextPoint(Vector2.down)
+            .NextPoint(Vector2.right)
+            .WorldPoint(new Vector2(2f, 0f))
+            .Build()
+        );
+
+        AssertCutResult(
+            polygon,
+            cutSegment,
+            expectedSideA: sideA,
+            expectedSideB: sideB
+        );
+    }
+
     [Test]
     public void CutASquaresRightEdge_When_FromBottomToTop_SideBIsTheWholeSquare()
     {

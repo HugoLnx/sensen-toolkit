@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SensenToolkit.Internal;
@@ -5,11 +6,6 @@ using UnityEngine;
 
 namespace SensenToolkit
 {
-    public class CutSubPolygon2D
-    {
-        public List<CutGraphNode> Nodes { get; } = new();
-        public bool IsSideA;
-    }
     public class Polygon2D
     {
         public Vector2[] Vertices { get; private set; }

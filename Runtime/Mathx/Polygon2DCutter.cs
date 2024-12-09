@@ -12,7 +12,7 @@ namespace SensenToolkit
         private Polygon2D _polygon;
         private CutGraph _graph;
         private List<CutPolygonBuilder> _allPolygons = new();
-        private HashSet<(CutGraphNode, bool)> _usedCutNodes = new();
+        private Dictionary<(CutGraphNode, bool), int> _cutNodesMissingUsageCount = new();
 
         public Polygon2DCutter(Polygon2D polygon, Vector2 origin, Vector2 direction)
         {
@@ -78,7 +78,7 @@ namespace SensenToolkit
 
         private void MountPolygon(CutGraphNode firstCutNode, bool isSideA)
         {
-            if (_usedCutNodes.Contains((firstCutNode, isSideA))) return;
+            if (_cutNodesMissingUsageCount.TryGetValue((firstCutNode, isSideA), out int missingUsageCount) && missingUsageCount == 0) return;
 
             bool isSideB = !isSideA;
             if (isSideA && !firstCutNode.IsSideA) return;
@@ -90,14 +90,31 @@ namespace SensenToolkit
 
             CutGraphNode lastNode = null;
             CutGraphNode node = firstCutNode;
+            SafeLoop safeLoop = new(maxIterations: 1000);
+            safeLoop.Reset();
             do
             {
                 polygon.AddAtEnd(node);
-                if (node.IsCutIntersection) _usedCutNodes.Add((node, isSideA));
+                if (node.IsCutIntersection)
+                {
+                    if (!_cutNodesMissingUsageCount.TryGetValue((node, isSideA), out missingUsageCount))
+                    {
+                        int maxUsageCount = 1;
+                        if (node.IsAVertexThatWasCut && node.IsSideA && node.IsSideB)
+                        {
+                            maxUsageCount = Mathf.Max(1, isSideA ? node.SideABranchCount : node.SideBBranchCount);
+                        }
+
+                        missingUsageCount = maxUsageCount;
+                    }
+                    missingUsageCount = Mathf.Max(0, missingUsageCount - 1);
+                    _cutNodesMissingUsageCount[(node, isSideA)] = missingUsageCount;
+                }
 
                 CutGraphNode nodeBkp = node;
                 node = GetNextPolygonNode(node, lastNode, isSideA);
                 lastNode = nodeBkp;
+                safeLoop.Count();
             } while (node != firstCutNode);
         }
 
@@ -107,10 +124,19 @@ namespace SensenToolkit
             CutGraphNode prevNode = node.PreviousNode;
             CutGraphNode crossCutPrevNode = node.PreviousCrossingCutNode;
             CutGraphNode crossCutNextNode = node.NextCrossingCutNode;
+            bool isCutNode = node.IsCutIntersection && lastNode != null;
+            if (isCutNode)
+            {
+                if (crossCutPrevNode != null && crossCutPrevNode != lastNode && CheckSide(crossCutPrevNode, isSideA)) return crossCutPrevNode;
+                if (crossCutNextNode != null && crossCutNextNode != lastNode && CheckSide(crossCutNextNode, isSideA)) return crossCutNextNode;
+            }
             if (nextNode != lastNode && !IsCutSegment(node, nextNode) && CheckSide(nextNode, isSideA)) return nextNode;
             if (prevNode != lastNode && !IsCutSegment(node, prevNode) && CheckSide(prevNode, isSideA)) return prevNode;
-            if (crossCutPrevNode != null && crossCutPrevNode != lastNode && CheckSide(crossCutPrevNode, isSideA)) return crossCutPrevNode;
-            if (crossCutNextNode != null && crossCutNextNode != lastNode && CheckSide(crossCutNextNode, isSideA)) return crossCutNextNode;
+            if (!isCutNode)
+            {
+                if (crossCutPrevNode != null && crossCutPrevNode != lastNode && CheckSide(crossCutPrevNode, isSideA)) return crossCutPrevNode;
+                if (crossCutNextNode != null && crossCutNextNode != lastNode && CheckSide(crossCutNextNode, isSideA)) return crossCutNextNode;
+            }
             throw new InvalidOperationException($"No next polygon node found for {node.Position} in side {(isSideA ? "A" : "B")}");
         }
 

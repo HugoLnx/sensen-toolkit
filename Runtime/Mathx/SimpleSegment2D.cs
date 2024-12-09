@@ -16,6 +16,7 @@ namespace SensenToolkit
         public Vector2 Direction;
         public float LengthForward;
         public float LengthBackward;
+        public float Length => LengthForward + LengthBackward;
         public readonly Vector2 Begin => Position - Direction * LengthBackward;
         public readonly Vector2 End => Position + Direction * LengthForward;
         public readonly Vector2 Center => float.IsInfinity(LengthForward) || float.IsInfinity(LengthBackward)
