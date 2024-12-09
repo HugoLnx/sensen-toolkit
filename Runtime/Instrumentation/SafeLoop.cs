@@ -7,6 +7,7 @@ namespace SensenToolkit
         private const int DefaultMaxIterations = 1000;
         private int _maxIterations;
         private int _interactions;
+        public bool HasReachedMax => _interactions >= _maxIterations;
 
         public SafeLoop(int maxIterations)
         {
@@ -15,15 +16,15 @@ namespace SensenToolkit
         }
 
         [Conditional("UNITY_EDITOR")]
-        public void Count()
+        public void Count(bool throwError = true)
         {
             if (_maxIterations <= 0) _maxIterations = DefaultMaxIterations;
             _interactions++;
-            if (_interactions > _maxIterations)
+            if (throwError && HasReachedMax)
             {
-                _interactions = 0;
                 UnityEngine.Debug.LogError("SafeLoop: Max iterations reached. Exiting loop.");
                 UnityEngine.Debug.Break();
+                throw new System.Exception("SafeLoop: Max iterations reached. Exiting loop.");
             }
         }
 
