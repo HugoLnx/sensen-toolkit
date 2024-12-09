@@ -62,6 +62,19 @@ namespace SensenToolkit
             );
         }
 
+        public void ConfigureCollider(BoxCollider collider, Space space = Space.Self)
+        {
+            if (space == Space.Self)
+            {
+                collider.transform.SetLocalPositionAndRotation(WorldCenter, Orientation);
+            }
+            else
+            {
+                collider.transform.SetPositionAndRotation(WorldCenter, Orientation);
+            }
+            collider.size = Size;
+        }
+
         public static Box FromBoxCollider(BoxCollider collider)
         {
             Vector3 worldCenter = collider.transform.TransformPoint(collider.center);
