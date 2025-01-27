@@ -6,7 +6,29 @@ namespace SensenToolkit
     where TStateId : struct, System.Enum
     {
         public abstract TStateId Id { get; }
-        public virtual void OnStateEnter() { }
-        public virtual void OnStateExit() { }
+        private bool _isActive = false;
+        protected virtual void OnStateEnter() { }
+        protected virtual void OnStateExit() { }
+        internal void OnStateEnterInternal()
+        {
+            this.enabled = true;
+            _isActive = true;
+            OnStateEnter();
+        }
+
+        internal void OnStateExitInternal()
+        {
+            OnStateExit();
+            _isActive = false;
+            this.enabled = false;
+        }
+
+        protected void OnDisable()
+        {
+            if (_isActive)
+            {
+                OnStateExitInternal();
+            }
+        }
     }
 }

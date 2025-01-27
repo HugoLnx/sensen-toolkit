@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using MyBox;
 using UnityEngine;
 
 namespace SensenToolkit
@@ -16,16 +18,30 @@ namespace SensenToolkit
         protected StateNode<TState, TStateId, TMessage> CurrentNode;
         private TStateId[] _allStateIds;
 
+#if UNITY_EDITOR
+        [Header("FSM Debug")]
+        [field: SerializeField, ReadOnly] protected string CurrentStateName { get; private set; }
+#endif
+
         protected virtual void Awake()
         {
             TState[] states = GetComponentsInChildren<TState>();
             foreach (TState state in states)
             {
                 Nodes[state.Id] = new StateNode<TState, TStateId, TMessage>(state);
+                state.enabled = false;
             }
-            CurrentNode = Nodes[InitialStateId];
             _allStateIds = Enum.GetValues(typeof(TStateId)) as TStateId[];
             AssertInitializedCorrectly();
+        }
+
+        protected virtual void OnEnable()
+        {
+            CurrentNode = Nodes[InitialStateId];
+            CurrentNode.State.OnStateEnterInternal();
+#if UNITY_EDITOR
+            StartCoroutine(DebuggerLoop());
+#endif
         }
 
         [Conditional("UNITY_EDITOR")]
@@ -48,11 +64,9 @@ namespace SensenToolkit
             TState nextState = nextNode.State;
             TState currentState = CurrentNode.State;
 
-            currentState.OnStateExit();
-            currentState.enabled = false;
-            nextState.enabled = true;
-            nextState.OnStateEnter();
+            currentState.OnStateExitInternal();
             CurrentNode = nextNode;
+            nextState.OnStateEnterInternal();
         }
 
         protected TransitionAdder<TState, TStateId, TMessage> AddTransitionFrom(params TStateId[] from)
@@ -70,6 +84,16 @@ namespace SensenToolkit
         internal void AddTransition(TStateId from, TMessage message, TStateId to)
         {
             Nodes[from].AddTransition(message, Nodes[to]);
+        }
+
+        private IEnumerator DebuggerLoop()
+        {
+            WaitForSeconds wait = new(0.35f);
+            while (true)
+            {
+                CurrentStateName = CurrentNode.State.Id.ToString();
+                yield return wait;
+            }
         }
     }
 }

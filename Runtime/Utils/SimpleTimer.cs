@@ -20,15 +20,16 @@ namespace SensenToolkit
 
         public event Action OnEnd;
 
-        public SimpleTimer(float cooldownSecs)
+        public SimpleTimer(float durationSecs = 1f)
         {
-            _durationSecs = cooldownSecs;
+            _durationSecs = durationSecs;
         }
 
-        public SimpleTimer Restart()
+        public SimpleTimer Restart(float? durationSecs = null)
         {
             HasEnded = false;
-            RemainingTime = _durationSecs;
+            RemainingTime = durationSecs ?? _durationSecs;
+            if (RemainingTime <= 0) throw new InvalidOperationException("Timer duration must be set on constructor or Restart method");
             Resume();
             return this;
         }
