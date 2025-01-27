@@ -37,8 +37,7 @@ namespace SensenToolkit
 
         protected virtual void OnEnable()
         {
-            CurrentNode = Nodes[InitialStateId];
-            CurrentNode.State.OnStateEnterInternal();
+            EnterNode(Nodes[InitialStateId]);
 #if UNITY_EDITOR
             StartCoroutine(DebuggerLoop());
 #endif
@@ -61,11 +60,44 @@ namespace SensenToolkit
         {
             if (!CurrentNode.NextStates.ContainsKey(message)) return;
             StateNode<TState, TStateId, TMessage> nextNode = CurrentNode.NextStates[message];
-            TState nextState = nextNode.State;
-            TState currentState = CurrentNode.State;
+            ExitNode(CurrentNode);
+            EnterNode(nextNode);
+        }
 
-            currentState.OnStateExitInternal();
-            CurrentNode = nextNode;
+        private void ExitNode(StateNode<TState, TStateId, TMessage> node)
+        {
+            TState state = node.State;
+            state.OnStateExitInternal();
+        }
+
+        private void EnterNode(StateNode<TState, TStateId, TMessage> node)
+        {
+            TState nextState = node.State;
+
+            HashSet<TStateId> currentGroupIds = CurrentNode?.State?.GroupIds;
+            HashSet<TStateId> nextGroupIds = nextState.GroupIds;
+            if (currentGroupIds != null)
+            {
+                HashSet<TStateId> exitingGroupIds = new(currentGroupIds);
+                if (nextGroupIds != null) exitingGroupIds.ExceptWith(nextGroupIds);
+                foreach (TStateId groupId in exitingGroupIds)
+                {
+                    StateNode<TState, TStateId, TMessage> groupNode = Nodes[groupId];
+                    groupNode.State.OnStateExitInternal();
+                }
+            }
+
+            if (nextGroupIds != null)
+            {
+                HashSet<TStateId> enteringGroupIds = new(nextGroupIds);
+                if (currentGroupIds != null) enteringGroupIds.ExceptWith(currentGroupIds);
+                foreach (TStateId groupId in enteringGroupIds)
+                {
+                    StateNode<TState, TStateId, TMessage> groupNode = Nodes[groupId];
+                    groupNode.State.OnStateEnterInternal();
+                }
+            }
+            CurrentNode = node;
             nextState.OnStateEnterInternal();
         }
 

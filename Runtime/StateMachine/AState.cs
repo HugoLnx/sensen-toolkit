@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SensenToolkit
@@ -6,6 +7,7 @@ namespace SensenToolkit
     where TStateId : struct, System.Enum
     {
         public abstract TStateId Id { get; }
+        public virtual HashSet<TStateId> GroupIds => null;
         private bool _isActive = false;
         protected virtual void OnStateEnter() { }
         protected virtual void OnStateExit() { }
