@@ -5,7 +5,7 @@ namespace SensenToolkit
 {
     public class SimpleExpandablePool<T> : IReleasablePool<T>
     {
-        private readonly Func<T> _factory;
+        private readonly Func<SimpleExpandablePool<T>, T> _factory;
         private readonly Queue<T> _resources = new();
         private readonly int _minSize;
         private readonly int _maxCreations;
@@ -16,8 +16,11 @@ namespace SensenToolkit
 
         public int MaxCreations => _maxCreations;
 
+        public delegate void OnInstanceCreatedAction(T instance);
+        private event OnInstanceCreatedAction OnInstanceCreated = delegate { };
+
         public SimpleExpandablePool(
-            Func<T> factory,
+            Func<SimpleExpandablePool<T>, T> factory,
             int minSize = 20,
             int? maxCreations = null,
             bool prefill = true
@@ -56,13 +59,23 @@ namespace SensenToolkit
             _resources.Enqueue(obj);
         }
 
+        public void ExecuteOncePerInstance(OnInstanceCreatedAction action)
+        {
+            foreach (T instance in Creations)
+            {
+                action(instance);
+            }
+            OnInstanceCreated += action;
+        }
+
         private void Grow()
         {
             if (Creations.Count >= _maxCreations)
             {
                 throw new InvalidOperationException("Pool has reached max it should create");
             }
-            T creation = _factory();
+            T creation = _factory(this);
+            OnInstanceCreated(creation);
             Creations.Add(creation);
             _resources.Enqueue(creation);
         }

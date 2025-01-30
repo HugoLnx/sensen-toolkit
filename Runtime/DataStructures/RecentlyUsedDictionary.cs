@@ -27,7 +27,7 @@ namespace SensenToolkit
         public RecentlyUsedDictionary(int nodePoolMaxSize = 20)
         {
             _pairPool = new SimpleExpandablePool<PairKeyNode>(
-                factory: () => CreateBlankPairNode(key: default),
+                factory: (_) => CreateBlankPairNode(key: default),
                 minSize: 0,
                 maxCreations: nodePoolMaxSize,
                 prefill: false

@@ -8,12 +8,12 @@ namespace SensenToolkit
     */
     public class MostRecentlyUsedPooledCache<TKey, TContent>
     {
-        private readonly Func<TContent> _factory;
+        private readonly Func<SimpleExpandablePool<TContent>, TContent> _factory;
         private readonly SimpleExpandablePool<TContent> _pool;
         private readonly MostRecentlyUsedCache<TKey, TContent> _cache;
 
         public MostRecentlyUsedPooledCache(
-            Func<TContent> factory,
+            Func<SimpleExpandablePool<TContent>, TContent> factory,
             int minSize = 20,
             int? maxCreations = null,
             bool prefill = true

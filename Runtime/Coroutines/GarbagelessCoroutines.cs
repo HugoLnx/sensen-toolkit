@@ -6,7 +6,7 @@ namespace SensenToolkit
 {
     public static class GarbagelessCoroutines
     {
-        private static readonly SimpleExpandablePool<WaitForSecondsRealtime> _waitSecondsRealtimePool = new(() => new(0f), minSize: 100);
+        private static readonly SimpleExpandablePool<WaitForSecondsRealtime> _waitSecondsRealtimePool = new((_) => new(0f), minSize: 100);
         private static readonly Dictionary<int, WaitForSeconds> _waitForSecondsDictionary = new();
         public static readonly WaitForEndOfFrame WaitForEndOfFrame = new();
         public static readonly WaitForFixedUpdate WaitForFixedUpdate = new();
